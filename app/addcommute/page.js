@@ -9,6 +9,5 @@ export default function AddCommutePage(){
         <Main>
             Add a commute: Ask what line/bus, direction, and stop here.
         </Main>
-
     )
 }

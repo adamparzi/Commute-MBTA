@@ -11,9 +11,28 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const header = (
+      <header>
+        <h1>Commute MBTA</h1>
+      </header>
+  )
+
+  const footer = (
+    <footer>
+      footer
+    </footer>
+  )
+
   return (
+
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={ 'w-full max-w-[10000px] mx-auto text-sm sm:text-base min-h-screen flex flex-col' + inter.className}>
+        {header}
+        {children}
+        {footer}
+      </body>
     </html>
   );
+
+  
 }
