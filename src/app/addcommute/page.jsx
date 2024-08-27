@@ -1,4 +1,4 @@
-import Main from "@/components/Main";
+import Main from "@src/components/MainBox";
 
 export const metadata = {
     title: "Add A Commute",
