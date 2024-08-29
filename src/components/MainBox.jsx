@@ -5,24 +5,25 @@
 
 import React, { useEffect, useState } from "react";
 import { fetchGreenLineBStops, fetchStopPredictions } from "../api/MbtaAPI"; // Import the API functions
+import MbtaAPI from "../api/MbtaAPI";
 
 const MainBox = () => {
-  let topText = "topText";
+  let topText = <MbtaAPI />
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="border-2 border-gray-500 px-2 py-1 text-center rounded-lg w-72">
+      <div className="border-2 border-gray-500 px-2 py-1 text-center rounded-lg w-72 bg-gray-700">
         {/* Top Component */}
         <div className="">
-          <span className="text-sm font-medium whitespace-normal break-words">
-            {topText} Green Line B Harvard Ave to Government Square
+          <span className="text-sm font-medium whitespace-normal break-words text-slate-100">
+            {topText} 
           </span>
         </div>
         {/* Horizontal Line */}
-        <hr className="border-gray-300 mx-4 my-1" />
+        <hr className="border-gray-500 mx-4 my-1" />
         {/* Bottom Component */}
         <div className="my-4">
-          <span className="text-3xl font-bold">16 min (13:48)</span>
+          <span className="text-3xl font-bold text-slate-100">16 min (13:48)</span>
         </div>
       </div>
     </div>

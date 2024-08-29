@@ -1,8 +1,16 @@
 // wraps all MainBoxes in an N x 3 configuration
+import MainBox from "./MainBox"
+
 
 const BoxContainer = () => {
+
+  
+
   return (
-    <div>BoxContainer</div>
+    <div>
+      <MainBox /> 
+      <MainBox />
+    </div>
   )
 }
 
