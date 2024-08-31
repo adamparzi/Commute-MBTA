@@ -15,7 +15,7 @@ const MainBox = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="border-2 border-gray-500 px-2 py-1 text-center rounded-lg w-72 bg-gray-700">
+      <div className="border-[3px] border-gray-500 px-2 py-1 text-center rounded-lg w-72 bg-gray-700">
         {/* Top Component */}
         <div className="">
           <span className="text-sm font-medium whitespace-normal break-words text-slate-100">
