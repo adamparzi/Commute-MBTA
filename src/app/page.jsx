@@ -1,6 +1,6 @@
 import MainBox from "@src/components/MainBox";
 import TitleContext from "@src/components/TitleContext";
-import MbtaAPI from "@src/api/MbtaAPI";
+import MbtaAPI from "@src/api/PredictionAPI";
 import BoxContainer from "@src/components/BoxContainer";
 
 const page = () => {

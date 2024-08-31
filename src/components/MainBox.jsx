@@ -4,11 +4,14 @@
 "use client"; // directive to prevent some useState error
 
 import React, { useEffect, useState } from "react";
-import { fetchGreenLineBStops, fetchStopPredictions } from "../api/MbtaAPI"; // Import the API functions
-import MbtaAPI from "../api/MbtaAPI";
+import { fetchGreenLineBStops, fetchStopPredictions } from "../api/PredictionAPI"; // Import the API functions
+import MbtaAPI from "../api/PredictionAPI";
+import Predictions from "./Predictions";
+import CommuteName from "./CommuteName";
 
 const MainBox = () => {
-  let topText = <MbtaAPI />
+  let bottomText = <Predictions stopId={"70149"} />
+  let topText = <CommuteName stopId={"70149"} />
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -16,14 +19,14 @@ const MainBox = () => {
         {/* Top Component */}
         <div className="">
           <span className="text-sm font-medium whitespace-normal break-words text-slate-100">
-            {topText} 
+          {topText}
           </span>
         </div>
         {/* Horizontal Line */}
         <hr className="border-gray-500 mx-4 my-1" />
         {/* Bottom Component */}
         <div className="my-4">
-          <span className="text-3xl font-bold text-slate-100">16 min (13:48)</span>
+          <span className="text-3xl font-bold text-slate-100">{bottomText}</span>
         </div>
       </div>
     </div>
