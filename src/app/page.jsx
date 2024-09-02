@@ -6,6 +6,9 @@ import CommuteSearchbar from "@src/components/CommuteSearchbar";
 
 const page = () => {
 
+  const handleStopSelected = (stopId) => {
+    setSelectedStopId(stopId);
+  };
 
   return (
     <div>

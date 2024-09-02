@@ -1,39 +1,28 @@
 import { useState, useEffect } from "react";
 import { StopAPI } from "@src/api/StopAPI";
+import { DescriptionsAPI } from "@src/api/DescriptionsAPI";
 
-
-const CommuteName = ({ stopId }) => { // by default, CommuteName uses name of stop - uses StopAPI
-
-    const [stops, setStops] = useState([]); // need array? only 1 stop given stopId
-    const [loading, setLoading] = useState(true);
+// name doesn't need to be fetched, only predicted time => use given stop obj instead of fetching from id
+const CommuteName = ({ selectedStop }) => {
+  const [description, setDescription] = useState(null);
   
     useEffect(() => {
-      const fetchStops = async () => {
-        setLoading(true);
-        try {
-          const data = await StopAPI(stopId);
-          setStops(data.data);
-        } catch (error) {
-          console.error("Failed to fetch stops: ", error);
-        } finally {
-          
-          setLoading(false);
-        }
-        
-      };
+      if (selectedStop && selectedStop.description)
+        setDescription(selectedStop.description);
 
-      fetchStops();
-    }, [stopId]);
-  
-    if (loading) {
-      return <div>Loading...</div>;
-    }
+    }, [selectedStop]);
+
+    // if (loading) {
+    //   return <div>Loading...</div>;
+    // }
   
     return (
       <div>
-            Stop: {stops.attributes.description}
+        Stop: {description}
       </div>
     );
-  };
-  
+  }; 
+            
+            
+ 
   export default CommuteName;

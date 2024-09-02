@@ -3,14 +3,18 @@
 
 "use client"; // directive to prevent some useState error
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchGreenLineBStops, fetchStopPredictions } from "../api/PredictionAPI"; // Import the API functions
 import MbtaAPI from "../api/PredictionAPI";
 import Predictions from "./Predictions";
 import CommuteName from "./CommuteName";
 
+
 const MainBox = () => {
-  let bottomText = <Predictions stopId={"70149"} />
+  
+ 
+
+  //let bottomText = <Predictions stopId={"70149"} />
   let topText = <CommuteName stopId={"70149"} />
 
   return (
@@ -26,7 +30,7 @@ const MainBox = () => {
         <hr className="border-gray-500 mx-4 my-1" />
         {/* Bottom Component */}
         <div className="my-4">
-          <span className="text-3xl font-bold text-slate-100">{bottomText}</span>
+          <span className="text-3xl font-bold text-slate-100">bottomText</span>
         </div>
       </div>
     </div>
