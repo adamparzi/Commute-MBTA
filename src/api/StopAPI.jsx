@@ -15,7 +15,7 @@ export const StopAPI = async () => {
        sort: "description",
      }
    });
-   console.log("stopAPI", response.data) // response.data is obj by axios, containing response.data.data array from API
+   //console.log("stopAPI", response.data) // response.data is obj by axios, containing response.data.data array from API
 
    // to disregard duplicate stops
    const seenStops = new Set();

@@ -6,16 +6,18 @@
 import { useEffect, useState } from "react";
 import { fetchGreenLineBStops, fetchStopPredictions } from "../api/PredictionAPI"; // Import the API functions
 import MbtaAPI from "../api/PredictionAPI";
-import Predictions from "./Predictions";
-import CommuteName from "./CommuteName";
+import HandlePrediction from "../util/HandlePrediction";
+import HandleCommuteName from "../util/HandleCommuteName";
+import MainBoxTopText from "./MainBoxTopText";
+import MainBoxBottomText from "./MainBoxBottomText";
 
 
 const MainBox = () => {
   
  
 
-  //let bottomText = <Predictions stopId={"70149"} />
-  let topText = <CommuteName stopId={"70149"} />
+  // let bottomText = <HandlePrediction selectedStop={"70149"} />
+  // let topText = <HandleCommuteName selectedStop={"70149"} />
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -23,14 +25,20 @@ const MainBox = () => {
         {/* Top Component */}
         <div className="">
           <span className="text-sm font-medium whitespace-normal break-words text-slate-100">
-          {topText}
+            
+          <MainBoxTopText />
+          
           </span>
         </div>
         {/* Horizontal Line */}
         <hr className="border-gray-500 mx-4 my-1" />
         {/* Bottom Component */}
         <div className="my-4">
-          <span className="text-3xl font-bold text-slate-100">bottomText</span>
+          <span className="text-3xl font-bold text-slate-100">
+
+            <MainBoxBottomText />
+
+          </span>
         </div>
       </div>
     </div>

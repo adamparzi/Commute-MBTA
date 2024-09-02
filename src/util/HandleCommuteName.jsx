@@ -1,9 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { StopAPI } from "@src/api/StopAPI";
 import { DescriptionsAPI } from "@src/api/DescriptionsAPI";
+import { StopContext } from "./StopProvider";
 
 // name doesn't need to be fetched, only predicted time => use given stop obj instead of fetching from id
-const CommuteName = ({ selectedStop }) => {
+const HandleCommuteName = () => {
+
+  const { selectedStop } = useContext(StopContext);
+  
   const [description, setDescription] = useState(null);
   
     useEffect(() => {
@@ -16,13 +20,15 @@ const CommuteName = ({ selectedStop }) => {
     //   return <div>Loading...</div>;
     // }
   
-    return (
-      <div>
-        Stop: {description}
-      </div>
-    );
+    return description;
   }; 
             
+
+  // return (
+  //   <div>
+  //     Stop: {description}
+  //   </div>
+  // );
             
  
-  export default CommuteName;
+  export default HandleCommuteName;
