@@ -1,49 +1,56 @@
 import { useState, useEffect, useContext } from "react";
-import { PredictionAPI } from '../api/PredictionAPI';
 import { StopContext } from "./StopProvider";
-import { API_URL_BASE } from "@src/api/apiConfig";
+import { API_URL_BASE, API_KEY } from "@src/api/apiConfig";
+import axios from "axios";
 
 
 const HandlePrediction = () => {
-  console.log("BING BONG", selectedStop);
-
   const { selectedStop } = useContext(StopContext)
-  console.log("selectedstop in handleprediction", selectedStop);
-
   const [prediction, setPrediction] = useState([]);
-  const [loading, setLoading] = useState(false);
+
+  if (selectedStop){
+    console.log("handleprediction: selectedstop ", selectedStop);
+    console.log("handleprediction: selectedstop.id ", selectedStop.id)
+  };
+
+
+  //const [loading, setLoading] = useState([]);
+
 
   useEffect(() => {
-    console.log("use effect runs")
-    const fetchPrediction = async () => {
-      setLoading(true);
 
+    console.log("handleprediction: selectedstop WAAA", selectedStop)
+
+    if (selectedStop === null){
+      return;
+    }
+
+
+    const fetchPrediction = async () => {
+      //setLoading(true);
       try {
         const response = await axios.get(`${API_URL_BASE}/predictions`, {
           params: {
             api_key: API_KEY,
             "filter[stop]": selectedStop.id,
-            //include: 'route',
           }
         });
+        console.log("handleprediction: RESPONSE ", response.data.data[0].attributes.arrival_time);
+        setPrediction(response.data.data[0].attributes.arrival_time)
       } catch (error) {
         console.error("Failed to fetch prediction", error);
-      } finally {
-        setLoading(false);
       }
-
-      console.log(response.data);
-
     };
 
+    // NOTE - setLoading or otherwise messing with the render will prematurely rerun useEffect()!
     fetchPrediction();
   }, [selectedStop]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  console.log("prediction: ",prediction)
+  console.log("FINAL PREDICTION HANDLEPREDICTION", prediction)
 
   return prediction
     

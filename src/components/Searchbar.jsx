@@ -10,23 +10,15 @@ import { StopContext } from '@src/util/StopProvider';
 const Searchbar = () => {
     //const [selectedStop, setSelectedStop] = useState(null);
 
-    const { setSelectedStop } = useContext(StopContext)
+    const { selectedStop, setSelectedStop } = useContext(StopContext)
+    console.log("Searchbar selectedStop", selectedStop)
 
 
     const handleStopSelected = (stop) => {
-      // keep local one jic - not useful
-      //setSelectedStop(stop);
-
-      // sets context (wrapper in page) with the selected stop for all components that need it
       setSelectedStop(stop);
-      console.log('selected stop (Searchbar):', stop)
     };
 
-
     return (
-      
-
-
       <div>
         <SearchbarLogic onStopSelected={handleStopSelected} />
       </div>
