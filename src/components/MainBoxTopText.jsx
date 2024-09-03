@@ -3,13 +3,11 @@ import HandleCommuteName from "@src/util/HandleCommuteName"
 import { useEffect } from "react"
 
 const MainBoxTopText = () => {
-    const commuteName = <HandleCommuteName />
-    
-    if (commuteName == "")
-        return <div>Select a stop</div>
+    const commuteName = HandleCommuteName();
+    console.log("commutename",commuteName)
 
   return (
-    <div><HandleCommuteName /></div>
+    <div>{commuteName}</div>
   )
 }
 
