@@ -11,7 +11,7 @@ const MainBoxBottomText = () => {
         return <div>Select a stop</div>
         
     return <div> Next arrival at {(prediction).toString().substring(11,16)}</div>;
-    return <div>{prediction}</div>
+    //return <div>{prediction}</div>
     }
 
 export default MainBoxBottomText
