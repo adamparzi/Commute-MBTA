@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useContext } from "react";
 import { StopContext } from "./StopProvider";
 import { API_URL_BASE, API_KEY } from "@src/api/apiConfig";

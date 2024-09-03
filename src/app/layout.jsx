@@ -1,9 +1,6 @@
-import '@styles/globals.css'
+"use client"
 
-export const metadata = {
-  title: 'Commute MBTA',
-  description: 'Commuting tool for Bostonians' 
-}
+import '@styles/globals.css'
 
 const RootLayout = ({children}) => {
   return (

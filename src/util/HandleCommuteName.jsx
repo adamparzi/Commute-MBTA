@@ -1,3 +1,6 @@
+"use client"
+
+
 import { useState, useEffect, useContext } from "react";
 import { StopAPI } from "@src/api/StopAPI";
 import { DescriptionsAPI } from "@src/api/DescriptionsAPI";

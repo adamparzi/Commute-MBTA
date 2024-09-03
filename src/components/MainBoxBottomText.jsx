@@ -1,4 +1,4 @@
-
+"use client"
 import HandlePrediction from "@src/util/HandlePrediction"
 
 const MainBoxBottomText = () => {

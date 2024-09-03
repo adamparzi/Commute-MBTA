@@ -1,5 +1,5 @@
 // includes title, weather, and weather message at the top of main page
-
+"use client"
 const TitleContext = () => {
   return (
     <div className="p-5">

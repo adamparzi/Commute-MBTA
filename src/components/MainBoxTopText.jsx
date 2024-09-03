@@ -1,4 +1,4 @@
-
+"use client"
 import HandleCommuteName from "@src/util/HandleCommuteName"
 import { useEffect } from "react"
 

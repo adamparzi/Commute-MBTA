@@ -1,3 +1,5 @@
+"use client"
+
 import axios from 'axios';
 import { API_URL_BASE, API_KEY } from './apiConfig';
 

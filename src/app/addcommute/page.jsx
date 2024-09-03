@@ -1,3 +1,5 @@
+// "use client"
+
 // import Main from "@src/components/MainBox";
 
 // export const metadata = {
