@@ -2,6 +2,7 @@
 
 import { createContext, useState } from 'react';
 import HandlePrediction from './HandlePrediction';
+import HandlePrediction from './HandlePrediction';
 
 const StopContext = createContext();
 
