@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 // page to add a commute
 
-export default function AddCommute() {
-  return (
-    <div>AddCommute</div>
-  )
-}
+const AddCommute = () => {
+  return <div>AddCommute</div>;
+};
+
+export default AddCommute;

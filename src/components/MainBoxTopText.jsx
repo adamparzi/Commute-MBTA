@@ -1,14 +1,11 @@
-"use client"
-import HandleCommuteName from "@src/util/HandleCommuteName"
-import { useEffect } from "react"
+"use client";
+
+import { getCommuteName } from "@src/util/mainBoxLogic";
 
 const MainBoxTopText = () => {
-    const commuteName = HandleCommuteName();
-    console.log("commutename",commuteName)
+  const commuteName = getCommuteName();
 
-  return (
-    <div>{commuteName}</div>
-  )
-}
+  return <div>{commuteName}</div>;
+};
 
-export default MainBoxTopText
+export default MainBoxTopText;

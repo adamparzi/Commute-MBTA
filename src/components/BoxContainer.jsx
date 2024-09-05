@@ -1,19 +1,15 @@
 // wraps all MainBoxes in an N x 3 configuration
-"use client"
+"use client";
 
-import MainBox from "./MainBox"
-
+import MainBox from "./MainBox";
 
 const BoxContainer = () => {
-
-  
-
   return (
     <div>
-      <MainBox /> 
+      <MainBox />
       <MainBox />
     </div>
-  )
-}
+  );
+};
 
-export default BoxContainer
+export default BoxContainer;
