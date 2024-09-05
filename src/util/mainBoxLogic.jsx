@@ -27,28 +27,34 @@ export const getCommutePrediction = () => {
   const { selectedStop } = useContext(StopContext);
   const [prediction, setPrediction] = useState([]);
 
+  const fetchPrediction = async () => {
+    try {
+      const response = await axios.get(`${API_URL_BASE}/predictions`, {
+        params: {
+          api_key: API_KEY,
+          "filter[stop]": selectedStop.id,
+        },
+      });
+
+      setPrediction(response.data.data[0].attributes.arrival_time);
+    } catch (error) {
+      console.error("Failed to fetch prediction:", error);
+    }
+    // NOTE - setLoading or otherwise messing with the render will prematurely rerun useEffect()!
+  };
+
   useEffect(() => {
     if (selectedStop === null || selectedStop.length === 0) {
       return;
     }
 
-    const fetchPrediction = async () => {
-      try {
-        const response = await axios.get(`${API_URL_BASE}/predictions`, {
-          params: {
-            api_key: API_KEY,
-            "filter[stop]": selectedStop.id,
-          },
-        });
-        setPrediction(response.data.data[0].attributes.arrival_time);
-      } catch (error) {
-        console.error("Failed to fetch prediction:", error);
-      }
-    };
-
-    // NOTE - setLoading or otherwise messing with the render will prematurely rerun useEffect()!
     fetchPrediction();
+
+    const intervalId = setInterval(fetchPrediction, 10000);
+    return () => clearInterval(intervalId);
   }, [selectedStop]);
 
   return prediction;
 };
+
+// returns true if arrival time is in the future - otherwise false

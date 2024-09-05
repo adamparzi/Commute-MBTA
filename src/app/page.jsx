@@ -1,4 +1,5 @@
 "use client";
+// useful: npm install --save <pkg name>
 
 import MainBox from "@src/components/MainBox";
 import TitleContext from "@src/components/TitleContext";
