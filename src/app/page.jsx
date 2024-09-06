@@ -7,8 +7,6 @@ import BoxContainer from "@src/components/BoxContainer";
 import Searchbar from "@src/components/Searchbar";
 import { StopProvider } from "@src/util/StopProvider";
 
-// testing feature branching strategy!
-
 const page = () => {
   // do you need to wrap with StopProvider? - yes
   return (
@@ -21,7 +19,5 @@ const page = () => {
     </div>
   );
 };
-
-// testing feature branching strategy!
 
 export default page;

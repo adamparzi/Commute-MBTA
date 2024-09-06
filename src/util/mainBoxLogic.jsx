@@ -4,8 +4,7 @@
 
 import { useState, useEffect, useContext } from "react";
 import { StopContext } from "./StopProvider";
-import { API_URL_BASE, API_KEY } from "@src/api/apiConfig";
-import axios from "axios";
+import apiFetch from "./apiFetch";
 
 // name doesn't need to be fetched => use selectedStop obj instead of fetching
 // mainbox top text
