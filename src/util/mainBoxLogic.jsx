@@ -1,11 +1,11 @@
 // logic for everything in a mainbox
 
-"use client";
+'use client';
 
-import { useState, useEffect, useContext } from "react";
-import { StopContext } from "./StopProvider";
-import axios from "axios";
-import apiFetch from "./apiFetch";
+import { useState, useEffect, useContext } from 'react';
+import { StopContext } from './StopProvider';
+import axios from 'axios';
+import apiFetch from './apiFetch';
 
 // name doesn't need to be fetched => use selectedStop obj instead of fetching
 // mainbox top text
@@ -15,8 +15,7 @@ export const getCommuteName = () => {
   const [description, setDescription] = useState(null);
 
   useEffect(() => {
-    if (selectedStop && selectedStop.description)
-      setDescription(selectedStop.description);
+    if (selectedStop && selectedStop.description) setDescription(selectedStop.description);
   }, [selectedStop]);
 
   return description;
@@ -24,15 +23,15 @@ export const getCommuteName = () => {
 
 export const getVehicleInfo = async (vehicleId) => {
   const params = {
-    "filter[id]": vehicleId,
+    'filter[id]': vehicleId
   };
 
   try {
-    const vehicleResponse = await apiFetch("/vehicles", params);
-    console.log("getVehicleInfo: vehicleResponse", vehicleResponse);
+    const vehicleResponse = await apiFetch('/vehicles', params);
+    console.log('getVehicleInfo: vehicleResponse', vehicleResponse);
     return vehicleResponse.data;
   } catch (error) {
-    console.error("Error fetching vehicle info:", error);
+    console.error('Error fetching vehicle info:', error);
     return null;
   }
 };
@@ -44,12 +43,12 @@ export const getCommutePrediction = () => {
 
   const fetchPrediction = async () => {
     const params = {
-      "filter[stop]": selectedStop.id,
+      'filter[stop]': selectedStop.id
     };
     try {
-      const predictionResponse = await apiFetch("/predictions", params);
+      const predictionResponse = await apiFetch('/predictions', params);
 
-      console.log("getCommutePrediction: response", predictionResponse);
+      console.log('getCommutePrediction: response', predictionResponse);
 
       // Extract vehicles (limit to 4)
       const predictionsWithVehicles = await Promise.all(
@@ -64,14 +63,14 @@ export const getCommutePrediction = () => {
 
           return {
             ...pred,
-            vehicleInfo, // Attach vehicle info (if available)
+            vehicleInfo // Attach vehicle info (if available)
           };
-        }),
+        })
       );
 
       setPrediction(predictionsWithVehicles);
     } catch (error) {
-      console.error("Error fetching predictions:", error);
+      console.error('Error fetching predictions:', error);
     }
   };
 

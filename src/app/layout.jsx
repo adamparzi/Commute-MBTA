@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import "@styles/globals.css";
+import '@styles/globals.css';
 
 const RootLayout = ({ children }) => {
   return (

@@ -1,7 +1,7 @@
-"use client"; // directive to prevent some useState error
+'use client'; // directive to prevent some useState error
 
-import MainBoxTopText from "./MainBoxTopText";
-import MainBoxBottomText from "./MainBoxBottomText";
+import MainBoxTopText from './MainBoxTopText';
+import MainBoxBottomText from './MainBoxBottomText';
 
 const MainBox = () => {
   // Individual bordered box containing commute name and ETAy

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { getCommuteName } from "@src/util/mainBoxLogic";
+import { getCommuteName } from '@src/util/mainBoxLogic';
 
 const MainBoxTopText = () => {
   const commuteName = getCommuteName();

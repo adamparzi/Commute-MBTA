@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Autocomplete, TextField } from "@mui/material";
-import { useState, useEffect } from "react";
-import { StopAPI } from "@src/api/StopAPI";
+import { Autocomplete, TextField } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { StopAPI } from '@src/api/StopAPI';
 
 const searchbarLogic = ({ onStopSelected }) => {
   const [stops, setStops] = useState([]);
@@ -13,7 +13,7 @@ const searchbarLogic = ({ onStopSelected }) => {
         const data = await StopAPI();
         setStops(data);
       } catch (error) {
-        console.error("Failed to fetch stops:", error);
+        console.error('Failed to fetch stops:', error);
       } finally {
       }
     };
@@ -23,7 +23,7 @@ const searchbarLogic = ({ onStopSelected }) => {
 
   // this handler "returns" the selectedStop to parent handler (Searchbar)
   const handleStopChange = (event, selectedStop) => {
-    if (selectedStop && typeof onStopSelected === "function") {
+    if (selectedStop && typeof onStopSelected === 'function') {
       onStopSelected(selectedStop);
     }
   };

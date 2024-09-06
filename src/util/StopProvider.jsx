@@ -1,5 +1,5 @@
-"use client";
-import { createContext, useState } from "react";
+'use client';
+import { createContext, useState } from 'react';
 
 const StopContext = createContext();
 
