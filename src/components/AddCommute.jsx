@@ -1,5 +1,3 @@
-"use client";
-
 // page to add a commute
 
 const AddCommute = () => {

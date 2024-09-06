@@ -66,7 +66,7 @@ export const getCommutePrediction = () => {
             ...pred,
             vehicleInfo, // Attach vehicle info (if available)
           };
-        })
+        }),
       );
 
       setPrediction(predictionsWithVehicles);

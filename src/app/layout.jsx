@@ -1,21 +1,17 @@
-"use client"
+"use client";
 
-import '@styles/globals.css'
+import "@styles/globals.css";
 
-const RootLayout = ({children}) => {
+const RootLayout = ({ children }) => {
   return (
-    <html lang='en'>
-      <body className='bg-neutral-700'>
-        <div className='main'>
-          
-        </div>
+    <html lang="en">
+      <body className="bg-neutral-700">
+        <div className="main"></div>
 
-        <main className='app'>
-          {children}
-        </main>
+        <main className="app">{children}</main>
       </body>
     </html>
-  )
-}
+  );
+};
 
-export default RootLayout
+export default RootLayout;
