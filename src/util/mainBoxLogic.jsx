@@ -26,6 +26,7 @@ export const getCommuteName = () => {
 export const getCommutePrediction = () => {
   const { selectedStop } = useContext(StopContext);
   const [prediction, setPrediction] = useState([]);
+  const [status, setStatus] = useState([]);
 
   const fetchPrediction = async () => {
     try {
@@ -36,7 +37,15 @@ export const getCommutePrediction = () => {
         },
       });
 
+      console.log("getCommutePrediction: response", response);
+
       setPrediction(response.data.data[0].attributes.arrival_time);
+
+      console.log(
+        "getCommuteName: update_type",
+        response.data.data[0].attributes.update_type
+      );
+      setStatus(response.data.data[0].attributes.update_type);
     } catch (error) {
       console.error("Failed to fetch prediction:", error);
     }
@@ -54,7 +63,7 @@ export const getCommutePrediction = () => {
     return () => clearInterval(intervalId);
   }, [selectedStop]);
 
-  return prediction;
+  return [prediction, status];
 };
 
 // returns true if arrival time is in the future - otherwise false

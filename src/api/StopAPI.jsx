@@ -24,6 +24,8 @@ export const StopAPI = async () => {
       .map((stop) => ({
         id: stop.id,
         description: stop.attributes.description,
+        status: stop.attributes.status,
+        direction_id: stop.attributes.direction_id,
       }))
       .filter((stop) => {
         // if no description, rm

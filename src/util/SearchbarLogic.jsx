@@ -6,19 +6,15 @@ import { StopAPI } from "@src/api/StopAPI";
 
 const searchbarLogic = ({ onStopSelected }) => {
   const [stops, setStops] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchStops = async () => {
-      setLoading(true);
       try {
-        const data = await StopAPI(); // fetch stops without passing stopId
-        //console.log("stops COMMUTE", data)
-        setStops(data); // save fetched stops to state
+        const data = await StopAPI();
+        setStops(data);
       } catch (error) {
         console.error("Failed to fetch stops:", error);
       } finally {
-        setLoading(false);
       }
     };
 
@@ -37,10 +33,9 @@ const searchbarLogic = ({ onStopSelected }) => {
       <Autocomplete
         sx={{ width: 250 }}
         options={stops}
-        label={"Enter a stop"}
         getOptionLabel={(stopOption) => stopOption.description} // define how to display each option
         onChange={handleStopChange}
-        renderInput={(params) => <TextField {...params} />}
+        renderInput={(params) => <TextField {...params} label="Enter a stop" />}
       />
     </div>
   );
