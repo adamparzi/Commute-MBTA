@@ -1,3 +1,9 @@
 # Ignore artifacts:
 build
 coverage
+node_modules/
+internals/generators/
+internals/scripts/
+package-lock.json
+yarn.lock
+package.json
