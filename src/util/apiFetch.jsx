@@ -4,6 +4,7 @@ import { API_URL_BASE, API_KEY } from "@src/api/apiConfig";
 // general purpose apiFetching helper function
 // doesn't use const, arrow to be "hoisted" and used before defined, and for simpler task
 async function apiFetch(directory, params) {
+  if (!params.length) return;
   try {
     const response = await axios.get(`${API_URL_BASE}${directory}`, {
       params: {

@@ -2,16 +2,21 @@
 import { getCommutePrediction } from "@src/util/mainBoxLogic";
 
 const MainBoxBottomText = () => {
-  const [eta, status] = getCommutePrediction();
-  console.log("status", status);
-  console.log("eta", eta);
+  // prediction JSON object now has fields 'pred' and 'vehicle'
+  const prediction = getCommutePrediction();
+  console.log("BottomText: prediction", prediction);
 
-  if (eta === null || !eta.length || status === null || !status.length)
+  if (prediction === null || !prediction.length)
     return <div>Enter a stop below</div>;
 
   return (
     <div>
-      <div>Next arrival at {eta.toString().substring(11, 16)}</div>
+      <div>
+        Next arrival at
+        {prediction.pred.data[0].attributes.arrival_time
+          .toString()
+          .substring(11, 16)}
+      </div>
       <div>Test: {status}</div>
     </div>
   );
