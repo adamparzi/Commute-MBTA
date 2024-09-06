@@ -6,7 +6,7 @@ const MainBoxBottomText = () => {
   const prediction = getCommutePrediction();
   console.log('BottomText: prediction', prediction);
 
-        if (prediction === null || !prediction.length) return <div>Enter a stop below</div>;
+  if (prediction === null || !prediction.length) return <div>Enter a stop below</div>;
 
   return (
     <div>
