@@ -3,11 +3,11 @@ import { API_URL_BASE, API_KEY } from '@src/util/apiConfig';
 
 // concept - selectedStop now contains list of id (and description bc why not) for all stops.
 // Using that id, you can search for predictions (however many there are per stop).
-// Within every prediction is a vehicle ID. Use that vehicle ID for location/anything else needed.
+// Within every prediction is a vehicle ID. Return an array of obj for each prediction's vehicles for location/anything else.
 // Since only predicted trams are relevant here, thats all we need.
 
 // general purpose apiFetching helper function
-// doesn't use const, arrow to be "hoisted" and used before defined, and for simpler task
+// doesn't use const, arrow so that it is "hoisted" and used before defined, and for simpler task
 export async function apiFetch(directory, params) {
   //if (!params.length) return;
   try {
@@ -17,7 +17,6 @@ export async function apiFetch(directory, params) {
         ...params // spread operator is powerful - consolidate anything needed into obj to simplify code
       }
     });
-    console.log('api response', response);
     return response; // returns JUST response
   } catch (error) {
     console.error(`Error fetching MBTA data: ${error}`);
@@ -25,7 +24,7 @@ export async function apiFetch(directory, params) {
   }
 }
 
-// takes response obj, returns a useful stop object with only relevant fields
+// takes response obj, returns a stop object - only ID is important, filtering description bc might as well do it here
 // this will be what is the context selectedStop will become.
 export async function apiFilter(response) {
   const seenStops = new Set();
@@ -34,11 +33,7 @@ export async function apiFilter(response) {
     const stops = response.data.data
       .map((stop) => ({
         id: stop.id,
-        description: stop.attributes.description,
-
-        // to be implemented
-        status: stop.attributes.status,
-        direction_id: stop.attributes.direction_id
+        description: stop.attributes.description
       }))
       .filter((stop) => {
         // format stop description

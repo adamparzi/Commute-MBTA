@@ -15,6 +15,8 @@ const searchbarLogic = ({ onStopSelected }) => {
       try {
         const stopResponse = await apiFetch('/stops', params);
 
+        console.log('full stopResponse', stopResponse);
+
         // important - filters API (and constantly updates) for all relevant fields
         const stopFiltered = await apiFilter(stopResponse);
         setStops(stopFiltered);
@@ -23,7 +25,6 @@ const searchbarLogic = ({ onStopSelected }) => {
       } finally {
       }
     };
-    console.log('final stops array SearchbarLogic:', stops);
     fetchStops();
   }, []); // empty dependency array to fetch data only once
 
