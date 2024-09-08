@@ -4,14 +4,12 @@
 
 import { useState, useEffect, useContext } from 'react';
 import { StopContext } from './StopProvider';
-import axios from 'axios';
-import apiFetch from './apiFetch';
+import { apiFetch } from './apiLogic';
 
 // name doesn't need to be fetched => use selectedStop obj instead of fetching
 // mainbox top text
 export const getCommuteName = () => {
   const { selectedStop } = useContext(StopContext);
-
   const [description, setDescription] = useState(null);
 
   useEffect(() => {
@@ -39,6 +37,7 @@ export const getVehicleInfo = async (vehicleId) => {
 // mainbox bottom text
 export const getCommutePrediction = () => {
   const { selectedStop } = useContext(StopContext);
+  console.log('selectedStop: ', selectedStop);
   const [prediction, setPrediction] = useState([]);
 
   const fetchPrediction = async () => {
@@ -46,29 +45,12 @@ export const getCommutePrediction = () => {
       'filter[stop]': selectedStop.id
     };
     try {
+      //if (!selectedStop.length) return [];
       const predictionResponse = await apiFetch('/predictions', params);
 
       console.log('getCommutePrediction: response', predictionResponse);
 
-      // Extract vehicles (limit to 4)
-      const predictionsWithVehicles = await Promise.all(
-        predictionResponse.data.slice(0, 5).map(async (pred) => {
-          const vehicleData = pred.relationships.vehicle.data;
-          const vehicleId = vehicleData && vehicleData.id; // Ensure vehicleData exists and get vehicleId
-
-          let vehicleInfo = null;
-          if (vehicleId) {
-            vehicleInfo = await getVehicleInfo(vehicleId);
-          }
-
-          return {
-            ...pred,
-            vehicleInfo // Attach vehicle info (if available)
-          };
-        })
-      );
-
-      setPrediction(predictionsWithVehicles);
+      setPrediction(predictionResponse.data.data);
     } catch (error) {
       console.error('Error fetching predictions:', error);
     }

@@ -2,28 +2,34 @@
 
 import { Autocomplete, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { StopAPI } from '@src/api/StopAPI';
+import { apiFetch, apiFilter } from './apiLogic';
 
 const searchbarLogic = ({ onStopSelected }) => {
   const [stops, setStops] = useState([]);
 
   useEffect(() => {
     const fetchStops = async () => {
+      const params = {
+        sort: 'description'
+      };
       try {
-        const data = await StopAPI();
-        setStops(data);
+        const stopResponse = await apiFetch('/stops', params);
+
+        // important - filters API (and constantly updates) for all relevant fields
+        const stopFiltered = await apiFilter(stopResponse);
+        setStops(stopFiltered);
       } catch (error) {
         console.error('Failed to fetch stops:', error);
       } finally {
       }
     };
-
+    console.log('final stops array SearchbarLogic:', stops);
     fetchStops();
   }, []); // empty dependency array to fetch data only once
 
   // this handler "returns" the selectedStop to parent handler (Searchbar)
   const handleStopChange = (event, selectedStop) => {
-    if (selectedStop && typeof onStopSelected === 'function') {
+    if (selectedStop) {
       onStopSelected(selectedStop);
     }
   };

@@ -1,0 +1,76 @@
+import axios from 'axios';
+import { API_URL_BASE, API_KEY } from '@src/util/apiConfig';
+
+// concept - selectedStop now contains list of id (and description bc why not) for all stops.
+// Using that id, you can search for predictions (however many there are per stop).
+// Within every prediction is a vehicle ID. Use that vehicle ID for location/anything else needed.
+// Since only predicted trams are relevant here, thats all we need.
+
+// general purpose apiFetching helper function
+// doesn't use const, arrow to be "hoisted" and used before defined, and for simpler task
+export async function apiFetch(directory, params) {
+  //if (!params.length) return;
+  try {
+    const response = await axios.get(`${API_URL_BASE}${directory}`, {
+      params: {
+        api_key: API_KEY,
+        ...params // spread operator is powerful - consolidate anything needed into obj to simplify code
+      }
+    });
+    console.log('api response', response);
+    return response; // returns JUST response
+  } catch (error) {
+    console.error(`Error fetching MBTA data: ${error}`);
+    throw error;
+  }
+}
+
+// takes response obj, returns a useful stop object with only relevant fields
+// this will be what is the context selectedStop will become.
+export async function apiFilter(response) {
+  const seenStops = new Set();
+
+  try {
+    const stops = response.data.data
+      .map((stop) => ({
+        id: stop.id,
+        description: stop.attributes.description,
+
+        // to be implemented
+        status: stop.attributes.status,
+        direction_id: stop.attributes.direction_id
+      }))
+      .filter((stop) => {
+        // format stop description
+
+        // if no description, rm
+        if (!stop.description) return false;
+
+        // Split the description into parts
+        const parts = stop.description.split(' - ');
+
+        // Ensure the description has exactly 3 parts
+        if (parts.length !== 3) return false;
+
+        const [stopName, lineName, endStations] = parts;
+
+        // if no main lines, rm
+        const validLines = ['Green Line', 'Red Line', 'Blue Line', 'Orange Line'];
+        if (!validLines.includes(lineName)) return false;
+
+        // If the stop name has already been encountered, rm
+        if (seenStops.has(stop.description)) return false;
+
+        // Otherwise, add the stop name to the set
+        seenStops.add(stop.description);
+
+        //else
+        return true;
+      });
+    console.log('stops:', stops);
+    return stops;
+  } catch (error) {
+    console.error('Error fetching stops obj:', error);
+    throw error;
+  }
+}

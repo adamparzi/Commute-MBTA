@@ -10,13 +10,10 @@ const MainBoxBottomText = () => {
 
   return (
     <div>
-      <div>
-        Next arrival at
-        {prediction.pred.data[0].attributes.arrival_time.toString().substring(11, 16)}
-      </div>
+      <div>Next arrival at</div>
       <div>Test: {status}</div>
     </div>
   );
 };
-
+//{prediction.pred.data[0].attributes.arrival_time.toString().substring(11, 16)}
 export default MainBoxBottomText;
