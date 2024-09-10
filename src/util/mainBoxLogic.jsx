@@ -6,6 +6,7 @@ import { useState, useEffect, useContext } from 'react';
 import { StopContext } from './StopProvider';
 import { apiFetch } from './apiLogic';
 import { DateTime } from 'luxon';
+import _ from 'lodash'; // modular utilites, use _.get
 
 // name doesn't need to be fetched => uses selectedStop obj instead of fetching
 // mainbox top text
@@ -75,7 +76,7 @@ export const getCommutePrediction = () => {
   useEffect(() => {
     fetchPrediction();
 
-    const intervalId = setInterval(fetchPrediction, 10000); // Polling every 10 seconds
+    const intervalId = setInterval(fetchPrediction, 5000); // Polling every 5 seconds
     return () => clearInterval(intervalId);
   }, [selectedStop]);
 
@@ -85,7 +86,21 @@ export const getCommutePrediction = () => {
     console.log('returning []');
     return [];
   }
+
   const predictionFiltered = prediction
+    .map((pred) => {
+      // last argument is default parameter
+      const vehicleInfo = _.get(pred, 'vehicleInfo.data.data[0]', {});
+      const vehicleStopId = _.get(vehicleInfo, 'relationships.stop.data.id', null);
+      const currentStatus = _.get(vehicleInfo, 'attributes.current_status', null);
+      const arrivalTime = _.get(pred, 'attributes.arrival_time', '').substring(11, 19);
+
+      return {
+        vehicleStopId: vehicleStopId,
+        vehicleCurrentStatus: currentStatus,
+        arrivalTime: arrivalTime
+      };
+    })
     .filter((pred) => {
       const format = 'HH:mm:ss';
       const vehicleStopId = pred.vehicleInfo?.data?.data[0]?.relationships?.stop?.data?.id;
@@ -94,6 +109,7 @@ export const getCommutePrediction = () => {
       const currentTime = DateTime.local();
 
       const arr = pred?.attributes?.arrival_time?.substring(11, 19);
+      if (!arr) return false;
       const arrivalTime = DateTime.fromFormat(arr, 'HH:mm:ss', { zone: 'local' });
 
       // if departing from selectedStop, rm
