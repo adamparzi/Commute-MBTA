@@ -1,6 +1,5 @@
 'use client';
 import { getCommutePrediction } from '@src/util/mainBoxLogic';
-import { predictionLogic } from '@src/util/mainBoxLogic';
 
 const MainBoxBottomText = () => {
   const prediction = getCommutePrediction();
@@ -8,14 +7,19 @@ const MainBoxBottomText = () => {
 
   if (!prediction || !prediction.length) return <div>Enter a stop below</div>;
 
-  return <div>test: {prediction.data[0].attributes.arrival_time.toString().substring(11, 16)}</div>;
+  return(
+  <div>
+    {}
+    Next arrival at: {prediction[0]}
+  </div>
+  )
 };
 //{prediction.pred.data[0].attributes.arrival_time.toString().substring(11, 16)}
 export default MainBoxBottomText;
 
 // <div>
 //   {/* Check if predictions array exists and has at least 1 item */}
-//   {predictions.length > 0 && (
+//   {predictionTimes.length > 0 && (
 //     <div className="large-prediction">
 //       {predictions[0].time} min – {predictions[0].destination}
 //     </div>
