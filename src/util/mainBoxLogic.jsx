@@ -115,7 +115,7 @@ export const getCommutePrediction = () => {
     // remove bad predictions
     .filter((pred) => {
       // if relevant field missing, rm
-      //console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:', pred);
+      //console.log('pred:', pred);
 
       // const falsyValue = Object.values(pred).find((val) => !val);
       // if (falsyValue) {
