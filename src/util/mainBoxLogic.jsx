@@ -5,7 +5,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { StopContext } from './StopProvider';
 import { apiFetch } from './apiLogic';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import _ from 'lodash'; // modular utilites, use _.get
 
 // name doesn't need to be fetched => uses selectedStop obj instead of fetching
@@ -41,6 +41,7 @@ export const getCommutePrediction = () => {
   const { selectedStop } = useContext(StopContext);
   console.log('selectedStop: ', selectedStop);
   const [prediction, setPrediction] = useState([]);
+  //const [status, setStatus] = useState([]); // use vehicle status as state machine input
 
   const fetchPrediction = async () => {
     const params = {
@@ -88,59 +89,85 @@ export const getCommutePrediction = () => {
   }
 
   const predictionFiltered = prediction
+
+    // distill relevant information
     .map((pred) => {
-      // last argument is default parameter
+      // using lodash - last argument is default
       const vehicleInfo = _.get(pred, 'vehicleInfo.data.data[0]', {});
       const vehicleStopId = _.get(vehicleInfo, 'relationships.stop.data.id', null);
       const currentStatus = _.get(vehicleInfo, 'attributes.current_status', null);
-      const arrivalTime = _.get(pred, 'attributes.arrival_time', '').substring(11, 19);
+
+      const format = 'HH:mm:ss';
+      const arrivalAtTime = _.get(pred, 'attributes.arrival_time', '')?.substring(11, 19) || '';
+      const arrivalAtTimeDT = DateTime?.fromFormat(arrivalAtTime, format, { zone: 'local' });
+      const arrivalInMin = arrivalAtTimeDT?.diffNow('minutes')?.get('minutes');
 
       return {
         vehicleStopId: vehicleStopId,
-        vehicleCurrentStatus: currentStatus,
-        arrivalTime: arrivalTime
+        currentStatus: currentStatus,
+        arrivalAtTime: arrivalAtTime,
+        arrivalAtTimeDT: arrivalAtTimeDT,
+        arrivalInMin: arrivalInMin,
+        format: format
       };
     })
+
+    // remove bad predictions
     .filter((pred) => {
-      const format = 'HH:mm:ss';
-      const vehicleStopId = pred.vehicleInfo?.data?.data[0]?.relationships?.stop?.data?.id;
-      const vehicleCurrentStatus = pred.vehicleInfo?.data?.data[0]?.attributes?.current_status;
+      // if relevant field missing, rm
+      //console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:', pred);
 
-      const currentTime = DateTime.local();
+      // const falsyValue = Object.values(pred).find((val) => !val);
+      // if (falsyValue) {
+      //   console.log('Falsiest value FOUND:', falsyValue);
+      // }
 
-      const arr = pred?.attributes?.arrival_time?.substring(11, 19);
-      if (!arr) return false;
-      const arrivalTime = DateTime.fromFormat(arr, 'HH:mm:ss', { zone: 'local' });
+      // if relevant fields missing or broken, rm prediction
+      if (Object.values(pred).some((val) => !val)) return false;
+
+      // if passed, passed = how long ago prediction was. otherwise, invalid interval
+      const passed = Interval?.fromDateTimes(pred.arrivalAtTimeDT, DateTime.now());
 
       // if departing from selectedStop, rm
-      if (vehicleCurrentStatus === 'DEPARTING' && vehicleStopId === selectedStop.id) return false;
-
-      // if ETA has passed significantly , rm
-      if (
-        currentTime.toFormat(format) > arrivalTime.toFormat(format) &&
-        currentTime.diff(arrivalTime, 'minutes') > 1 // remove conservatively for now
-      ) {
-        console.log(currentTime.toFormat(format), '>', arrivalTime.toFormat(format));
+      if (pred.currentStatus === 'DEPARTING' && pred.vehicleStopId === selectedStop.id)
         return false;
-      } else console.log(currentTime.toFormat(format), '<', arrivalTime.toFormat(format));
+
+      // if ETA has passed significantly, AND if its not stopped at selectedStop, rm
+      if (
+        Interval.isInterval(passed) &&
+        passed.length('minutes') > 1 // remove conservatively for now
+      ) {
+        if (pred.currentStatus != 'STOPPED_AT' && pred.vehicleStopId != selectedStop.id) {
+          console.log(DateTime.now().toFormat(pred.format), '>', pred.arrivalAtTime);
+          return false;
+        }
+      }
 
       return true;
     })
+
+    // limit # predictions to 3
     .slice(0, 3)
+
+    // format for display
     .map((pred) => {
       // status supercedes prediction time
-      const vehicleStopId = pred.vehicleInfo?.data?.data[0]?.relationships?.stop?.data?.id;
-      const vehicleCurrentStatus = pred.vehicleInfo?.data?.data[0]?.attributes?.current_status;
-      console.log(vehicleCurrentStatus);
+      // const vehicleStopId = pred.vehicleStopId;
+      // const currentStatus = pred.currentStatus;
 
-      if (vehicleStopId === selectedStop.id && vehicleCurrentStatus === 'INCOMING_AT') {
-        return 'Arriving soon';
-      }
-      if (vehicleStopId === selectedStop.id && vehicleCurrentStatus === 'STOPPED_AT') {
-        return 'Now boarding';
-      }
+      var newStatus = '';
 
-      return pred.attributes.arrival_time.toString().substring(11, 16);
+      if (pred.vehicleStopId === selectedStop.id && pred.currentStatus === 'INCOMING_AT') {
+        newStatus = 'Arriving soon';
+      }
+      if (pred.vehicleStopId === selectedStop.id && pred.currentStatus === 'STOPPED_AT') {
+        newStatus = 'Now boarding';
+      }
+      return {
+        arrivalAtTime: pred.arrivalAtTime.substring(0, 5),
+        vehicleStopId: pred.vehicleStopId,
+        currentStatus: pred.currentStatus
+      };
     });
 
   console.log('mainBoxLogic: predictionFiltered', predictionFiltered);

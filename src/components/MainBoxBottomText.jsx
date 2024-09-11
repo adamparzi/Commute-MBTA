@@ -7,16 +7,15 @@ const MainBoxBottomText = () => {
 
   if (!prediction || !prediction.length) return <div>Enter a stop below</div>;
 
-  return(
-  <div>
-    {}
-    Next arrival at: {prediction[0]}
-  </div>
-  )
+  return <div></div>;
 };
 //{prediction.pred.data[0].attributes.arrival_time.toString().substring(11, 16)}
 export default MainBoxBottomText;
 
+//{}
+//    Next arrival at: {prediction[0]}
+
+// ---- OLD
 // <div>
 //   {/* Check if predictions array exists and has at least 1 item */}
 //   {predictionTimes.length > 0 && (
