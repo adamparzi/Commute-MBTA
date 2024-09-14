@@ -38,5 +38,5 @@ next-env.d.ts
 # Local Netlify folder
 .netlify
 
-#custom
-.prettierignore
+# custom
+*.code-workspace
