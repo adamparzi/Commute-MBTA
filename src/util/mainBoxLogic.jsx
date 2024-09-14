@@ -41,7 +41,6 @@ export const getCommutePrediction = () => {
   const { selectedStop } = useContext(StopContext);
   console.log('selectedStop: ', selectedStop);
   const [prediction, setPrediction] = useState([]);
-  //const [status, setStatus] = useState([]); // use vehicle status as state machine input
 
   const fetchPrediction = async () => {
     const params = {
@@ -96,6 +95,8 @@ export const getCommutePrediction = () => {
       const vehicleInfo = _.get(pred, 'vehicleInfo.data.data[0]', {});
       const vehicleStopId = _.get(vehicleInfo, 'relationships.stop.data.id', null);
       const currentStatus = _.get(vehicleInfo, 'attributes.current_status', null);
+      const vehicleLatitude = _.get(vehicleInfo, 'attributes.latitude', null);
+      const vehicleLongitude = _.get(vehicleInfo, 'attributes.longitude', null);
 
       const format = 'HH:mm:ss';
       const arrivalAtTime = _.get(pred, 'attributes.arrival_time', '')?.substring(11, 19) || '';
@@ -108,32 +109,27 @@ export const getCommutePrediction = () => {
         arrivalAtTime: arrivalAtTime,
         arrivalAtTimeDT: arrivalAtTimeDT,
         arrivalIn: arrivalIn,
-        format: format
+        format: format,
+
+        lat: vehicleLatitude,
+        lng: vehicleLongitude
       };
     })
 
     // remove bad predictions
     .filter((pred) => {
-      // if relevant field missing, rm
-      //console.log('pred:', pred);
-
-      // const falsyValue = Object.values(pred).find((val) => !val);
-      // if (falsyValue) {
-      //   console.log('Falsiest value FOUND:', falsyValue);
-      // }
-
       // if relevant fields missing or broken, rm prediction
       if (Object.values(pred).some((val) => !val)) return false;
 
       // if passed, passed = how long ago prediction was. otherwise, invalid interval
       const passed = Interval?.fromDateTimes(pred.arrivalAtTimeDT, DateTime.now());
-      //if (Interval.isInterval(passed)) console.log('PASSED', passed.length);
 
       // if departing from selectedStop, rm
       if (pred.currentStatus === 'DEPARTING' && pred.vehicleStopId === selectedStop.id)
         return false;
 
-      // if ETA has passed significantly, AND if its not stopped at selectedStop, rm
+      // if ETA has passed significantly, AND if vehicle not stopped at selectedStop, rm.
+      // currently, gives a grace period of 30 seconds if vehicle is boarding for 30 seconds
       if (
         Interval.isInterval(passed) &&
         passed.length('seconds') > 10 // remove conservatively for now
@@ -155,10 +151,6 @@ export const getCommutePrediction = () => {
 
     // format for display
     .map((pred) => {
-      // status supercedes prediction time
-      // const vehicleStopId = pred.vehicleStopId;
-      // const currentStatus = pred.currentStatus;
-
       var newStatus = '';
 
       if (pred.vehicleStopId === selectedStop.id && pred.currentStatus === 'INCOMING_AT') {
@@ -171,7 +163,10 @@ export const getCommutePrediction = () => {
         arrivalAtTime: pred.arrivalAtTime.substring(0, 5),
         vehicleStopId: pred.vehicleStopId,
         currentStatus: newStatus,
-        arrivalIn: pred.arrivalIn
+        arrivalIn: pred.arrivalIn,
+
+        // location[0] = lat, location[1] = long
+        location: [pred.lat, pred.lng]
       };
     });
 
