@@ -33,7 +33,8 @@ export async function apiFilter(response) {
     const stops = response.data.data
       .map((stop) => ({
         id: stop.id,
-        description: stop.attributes.description
+        description: stop.attributes.description,
+        stop_sequence: stop.attributes.stop_sequence
       }))
       .filter((stop) => {
         // format stop description

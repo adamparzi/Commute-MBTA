@@ -100,14 +100,14 @@ export const getCommutePrediction = () => {
       const format = 'HH:mm:ss';
       const arrivalAtTime = _.get(pred, 'attributes.arrival_time', '')?.substring(11, 19) || '';
       const arrivalAtTimeDT = DateTime?.fromFormat(arrivalAtTime, format, { zone: 'local' });
-      const arrivalInMin = arrivalAtTimeDT?.diffNow('minutes')?.get('minutes');
+      const arrivalIn = arrivalAtTimeDT?.diffNow()?.toFormat('m') + ' min';
 
       return {
         vehicleStopId: vehicleStopId,
         currentStatus: currentStatus,
         arrivalAtTime: arrivalAtTime,
         arrivalAtTimeDT: arrivalAtTimeDT,
-        arrivalInMin: arrivalInMin,
+        arrivalIn: arrivalIn,
         format: format
       };
     })
@@ -127,6 +127,7 @@ export const getCommutePrediction = () => {
 
       // if passed, passed = how long ago prediction was. otherwise, invalid interval
       const passed = Interval?.fromDateTimes(pred.arrivalAtTimeDT, DateTime.now());
+      //if (Interval.isInterval(passed)) console.log('PASSED', passed.length);
 
       // if departing from selectedStop, rm
       if (pred.currentStatus === 'DEPARTING' && pred.vehicleStopId === selectedStop.id)
@@ -135,12 +136,15 @@ export const getCommutePrediction = () => {
       // if ETA has passed significantly, AND if its not stopped at selectedStop, rm
       if (
         Interval.isInterval(passed) &&
-        passed.length('minutes') > 1 // remove conservatively for now
+        passed.length('seconds') > 10 // remove conservatively for now
       ) {
-        if (pred.currentStatus != 'STOPPED_AT' && pred.vehicleStopId != selectedStop.id) {
-          console.log(DateTime.now().toFormat(pred.format), '>', pred.arrivalAtTime);
+        if (
+          pred.currentStatus != 'STOPPED_AT' &&
+          pred.stop_sequence != selectedStop.stop_sequence
+        ) {
+          console.log('Old prediction hit');
           return false;
-        }
+        } else if (passed.length('seconds') > 30) return false;
       }
 
       return true;
@@ -158,15 +162,16 @@ export const getCommutePrediction = () => {
       var newStatus = '';
 
       if (pred.vehicleStopId === selectedStop.id && pred.currentStatus === 'INCOMING_AT') {
-        newStatus = 'Arriving soon';
-      }
-      if (pred.vehicleStopId === selectedStop.id && pred.currentStatus === 'STOPPED_AT') {
+        newStatus = 'Arriving...';
+      } else if (pred.vehicleStopId === selectedStop.id && pred.currentStatus === 'STOPPED_AT') {
         newStatus = 'Now boarding';
-      }
+      } else newStatus = '';
+
       return {
         arrivalAtTime: pred.arrivalAtTime.substring(0, 5),
         vehicleStopId: pred.vehicleStopId,
-        currentStatus: pred.currentStatus
+        currentStatus: newStatus,
+        arrivalIn: pred.arrivalIn
       };
     });
 
