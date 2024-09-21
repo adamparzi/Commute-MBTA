@@ -42,9 +42,12 @@ export const getCommutePrediction = () => {
   console.log('selectedStop: ', selectedStop);
   const [prediction, setPrediction] = useState([]);
 
+  if (!selectedStop) return {};
+
+  // 70130
   const fetchPrediction = async () => {
     const params = {
-      'filter[stop]': selectedStop.id
+      'filter[stop]': selectedStop.id // ?? 70130
     };
     try {
       const predictionResponse = await apiFetch('/predictions', params);
@@ -74,7 +77,8 @@ export const getCommutePrediction = () => {
   };
 
   useEffect(() => {
-    fetchPrediction();
+    // make sure there's an id to fetch prediction with
+    if (selectedStop.id) fetchPrediction();
 
     const intervalId = setInterval(fetchPrediction, 5000); // Polling every 5 seconds
     return () => clearInterval(intervalId);
@@ -83,7 +87,7 @@ export const getCommutePrediction = () => {
   console.log('mainBoxLogic: prediction', prediction); // all available predictions + vehicleInfo for the selectedStop
 
   if (!prediction || !prediction.length) {
-    console.log('returning []');
+    console.log('returning []. Prediction is empty');
     return [];
   }
 
@@ -95,8 +99,9 @@ export const getCommutePrediction = () => {
       const vehicleInfo = _.get(pred, 'vehicleInfo.data.data[0]', {});
       const vehicleStopId = _.get(vehicleInfo, 'relationships.stop.data.id', null);
       const currentStatus = _.get(vehicleInfo, 'attributes.current_status', null);
-      const vehicleLatitude = _.get(vehicleInfo, 'attributes.latitude', null);
-      const vehicleLongitude = _.get(vehicleInfo, 'attributes.longitude', null);
+      const vehicleLatitude = _.get(vehicleInfo, 'attributes.latitude', 0);
+      const vehicleLongitude = _.get(vehicleInfo, 'attributes.longitude', 0);
+      const bearing = _.get(vehicleInfo, 'attributes.bearing', 0);
 
       const format = 'HH:mm:ss';
       const arrivalAtTime = _.get(pred, 'attributes.arrival_time', '')?.substring(11, 19) || '';
@@ -110,16 +115,17 @@ export const getCommutePrediction = () => {
         arrivalAtTimeDT: arrivalAtTimeDT,
         arrivalIn: arrivalIn,
         format: format,
-
-        lat: vehicleLatitude,
-        lng: vehicleLongitude
+        bearing: bearing,
+        location: { vehicleLatitude, vehicleLongitude }
       };
     })
-
     // remove bad predictions
     .filter((pred) => {
       // if relevant fields missing or broken, rm prediction
-      if (Object.values(pred).some((val) => !val)) return false;
+      if (Object.values(pred).some((val) => !val)) {
+        console.log('rm bad predictions in:', pred);
+        return false;
+      }
 
       // if passed, passed = how long ago prediction was. otherwise, invalid interval
       const passed = Interval?.fromDateTimes(pred.arrivalAtTimeDT, DateTime.now());
@@ -164,9 +170,8 @@ export const getCommutePrediction = () => {
         vehicleStopId: pred.vehicleStopId,
         currentStatus: newStatus,
         arrivalIn: pred.arrivalIn,
-
-        // location[0] = lat, location[1] = long
-        location: [pred.lat, pred.lng]
+        bearing: pred.bearing,
+        location: pred.location
       };
     });
 

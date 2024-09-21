@@ -18,7 +18,7 @@ const searchbarLogic = ({ onStopSelected }) => {
         console.log('full stopResponse', stopResponse);
 
         // important - filters API (and constantly updates) for all relevant fields
-        const stopFiltered = await apiFilter(stopResponse);
+        const stopFiltered = apiFilter(stopResponse);
         setStops(stopFiltered);
       } catch (error) {
         console.error('Failed to fetch stops:', error);

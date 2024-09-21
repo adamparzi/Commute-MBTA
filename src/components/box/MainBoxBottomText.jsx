@@ -6,14 +6,14 @@ const MainBoxBottomText = () => {
   console.log('BottomText: prediction', pred);
 
   return (
-    <div className="mb-2">
+    <div className="my-2">
       <div className="flex flex-col my-3 text-3xl font-bold">
         {!pred[0] ? (
-          <div className="text-center text-slate-100">No info available</div>
+          <div className="text-center text-slate-100">No data available</div>
         ) : pred[0].currentStatus ? (
           <div className="text-center text-slate-100">{pred[0].currentStatus}</div>
         ) : (
-          <div className="flex">
+          <div className="flex mx-2">
             <span className="text-center text-slate-100">
               Next arrival at: {pred[0].arrivalAtTime}
               <span className="text-sm text-slate-400"> &#40;{pred[0].arrivalIn}&#41;</span>
