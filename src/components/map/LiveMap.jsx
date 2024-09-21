@@ -13,29 +13,29 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 const LiveMap = () => {
   const predictions = getCommutePrediction();
 
-  const mapRef = useRef(); // create a reference for the map
+  // const mapRef = useRef(); // create a reference for the map
 
-  // recenter the map
-  useEffect(() => {
-    if (mapRef.current) {
-      const bounds = L.latLngBounds(
-        predictions.map((prediction) => [
-          prediction.location.vehicleLatitude,
-          prediction.location.vehicleLongitude
-        ])
-      );
+  // // recenter the map
+  // useEffect(() => {
+  //   if (mapRef.current) {
+  //     const bounds = L.latLngBounds(
+  //       predictions.map((prediction) => [
+  //         prediction.location.vehicleLatitude,
+  //         prediction.location.vehicleLongitude
+  //       ])
+  //     );
 
-      mapRef.current.fitBounds(bounds);
-    }
-  }, [predictions]); // Run this effect whenever predictions change
+  //     mapRef.current.fitBounds(bounds);
+  //   }
+  // }, [predictions]); // Run this effect whenever predictions change
 
   // ----------
   const createVehicleIcon = (bearing) => {
     return L.divIcon({
       className: 'vehicle-icon',
-      html: `<img src="/arrow_north.png" style="transform: rotate(${bearing}deg); width: 40px; height: 40px;" />`,
-      iconSize: [40, 40], // Size of the SVG
-      iconAnchor: [20, 20] // Center the icon
+      html: `<img src="/arrow_north.png" style="transform: rotate(${bearing}deg); width: 25px; height: 25px;" />`
+      //iconSize: [40, 40], // Size of the SVG
+      //iconAnchor: [20, 20] // Center the icon
     });
   };
   // ---------
@@ -46,7 +46,7 @@ const LiveMap = () => {
         center={[42.3601, -71.0789]}
         zoom={12}
         scrollWheelZoom={true}
-        style={{ height: '400px', width: '30%' }}
+        style={{ height: '400px', width: '500px' }}
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
         }}>

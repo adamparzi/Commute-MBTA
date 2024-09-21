@@ -7,7 +7,7 @@ const MainBox = () => {
   // Individual bordered box containing commute name and ETAy
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center m-2">
       <div className="border-[3px] border-gray-500 rounded-lg w-72 bg-gray-700">
         {/* Top Component */}
         <div className="">

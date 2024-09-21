@@ -62,7 +62,6 @@ export function apiFilter(response) {
         // Otherwise, add the stop name to the set
         seenStops.add(stop.description);
 
-        //else
         return true;
       });
     console.log('stops:', stops);

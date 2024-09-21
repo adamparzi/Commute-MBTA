@@ -36,13 +36,32 @@ const searchbarLogic = ({ onStopSelected }) => {
   };
 
   return (
-    <div className="flex flex-col m-auto pt-3 w-64">
+    <div className="flex flex-col m-auto mt-4 w-64">
       <Autocomplete
-        sx={{ width: 250 }}
+        sx={{
+          width: 250,
+          input: { color: 'white' },
+          label: { color: 'white' },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: 'darkgray' // Default border color
+            },
+            '&:hover fieldset': {
+              borderColor: 'slategrey' // Border color when hovered
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'steelblue' // Border color when focused
+            }
+          },
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: 'lightblue' // Label color when focused
+          }
+        }}
         options={stops}
         getOptionLabel={(stopOption) => stopOption.description} // define how to display each option
         onChange={handleStopChange}
-        renderInput={(params) => <TextField {...params} label="Enter a stop" />}
+        ListboxProps={{ style: { maxHeight: 275 } }}
+        renderInput={(params) => <TextField {...params} size="small" label="Enter a stop" />}
       />
     </div>
   );
