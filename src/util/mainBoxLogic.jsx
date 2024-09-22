@@ -39,7 +39,6 @@ export const getVehicleInfo = async (vehicleId) => {
 // returns array of obj containing prediction and vehicle fields
 export const getCommutePrediction = () => {
   const { selectedStop } = useContext(StopContext);
-  console.log('selectedStop: ', selectedStop);
   const [prediction, setPrediction] = useState([]);
 
   if (!selectedStop) return {};
@@ -80,14 +79,11 @@ export const getCommutePrediction = () => {
     // make sure there's an id to fetch prediction with
     if (selectedStop.id) fetchPrediction();
 
-    const intervalId = setInterval(fetchPrediction, 5000); // Polling every 5 seconds
+    const intervalId = setInterval(fetchPrediction, 3000); // Polling every 3 seconds
     return () => clearInterval(intervalId);
   }, [selectedStop]);
 
-  console.log('mainBoxLogic: prediction', prediction); // all available predictions + vehicleInfo for the selectedStop
-
   if (!prediction || !prediction.length) {
-    console.log('returning []. Prediction is empty');
     return [];
   }
 

@@ -5,7 +5,7 @@ import '@styles/globals.css';
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">
-      <body className="bg-neutral-700">
+      <body className="bg-zinc-800">
         <div className="main"></div>
 
         <main className="app">{children}</main>

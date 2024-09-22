@@ -64,7 +64,6 @@ export function apiFilter(response) {
 
         return true;
       });
-    console.log('stops:', stops);
     return stops;
   } catch (error) {
     console.error('Error fetching stops obj:', error);
