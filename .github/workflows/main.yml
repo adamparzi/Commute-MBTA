@@ -1,0 +1,36 @@
+name: Deploy Next.js to Netlify
+
+on:
+  push:
+    branches:
+      - main # Adjust this if you deploy from a different branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.16.0' # Ensure this matches your project requirements
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+        env:
+          NEXT_PUBLIC_MBTA_API: ${{ secrets.MBTA_API }} # This passes your API key to the build process
+          NEXT_PUBLIC_OPENWEATHER_API: ${{ secrets.OPENWEATHER_API }}
+
+      - name: Deploy to Netlify
+        run: |
+          npm install -g netlify-cli
+          netlify deploy --prod --dir=./out --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }} # Add your Netlify token in GitHub Secrets
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }} # Add your Netlify site ID in GitHub Secrets
