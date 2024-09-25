@@ -13,9 +13,10 @@ const MainBoxBottomText = () => {
         ) : pred[0].currentStatus ? (
           <div className="text-center text-slate-100">{pred[0].currentStatus}</div>
         ) : (
-          <div className="flex mx-2">
+          <div className="flex flex-col mx-2">
             <span className="text-center text-slate-100">
-              Next arrival at: {pred[0].arrivalAtTime}
+              Next arrival at: <br />
+              {pred[0].arrivalAtTime}
               <span className="text-sm text-slate-400"> &#40;{pred[0].arrivalIn}&#41;</span>
             </span>
           </div>

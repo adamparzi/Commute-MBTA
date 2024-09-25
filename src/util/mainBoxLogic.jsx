@@ -77,10 +77,13 @@ export const getCommutePrediction = () => {
 
   useEffect(() => {
     // make sure there's an id to fetch prediction with
-    if (selectedStop.id) fetchPrediction();
+    // empty array is true for some reason - need to check if id exists
+    if (selectedStop.id) {
+      fetchPrediction();
 
-    const intervalId = setInterval(fetchPrediction, 3000); // Polling every 3 seconds
-    return () => clearInterval(intervalId);
+      const intervalId = setInterval(fetchPrediction, 3000); // Polling every 3 seconds
+      return () => clearInterval(intervalId);
+    }
   }, [selectedStop]);
 
   if (!prediction || !prediction.length) {
