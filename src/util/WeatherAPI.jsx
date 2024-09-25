@@ -1,1 +1,0 @@
-//https://api.open-meteo.com/v1/forecast?latitude=42.36&longitude=71.06&minutely_15=temperature_2m,precipitation&hourly=precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FNew_York&forecast_days=1

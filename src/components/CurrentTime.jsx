@@ -18,7 +18,11 @@ const CurrentTime = () => {
     return null; // Don't render anything on the server side
   }
 
-  return <div>{currentTime.toFormat('ccc, dd LLL HH:mm:ss')}</div>;
+  return (
+    <div className="font-semibold text-slate-100">
+      {currentTime.toFormat('ccc, dd LLL HH:mm:ss')}
+    </div>
+  );
 };
 
 export default CurrentTime;

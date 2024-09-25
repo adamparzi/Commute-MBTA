@@ -26,7 +26,7 @@ export async function apiFetch(directory, params) {
 
 // takes response obj, returns a stop object - only ID is important, filtering description bc might as well do it here
 // this will be what is the context selectedStop will become.
-export async function apiFilter(response) {
+export function apiFilter(response) {
   const seenStops = new Set();
 
   try {
@@ -36,9 +36,8 @@ export async function apiFilter(response) {
         description: stop.attributes.description,
         stop_sequence: stop.attributes.stop_sequence
       }))
+      // format stop description
       .filter((stop) => {
-        // format stop description
-
         // if no description, rm
         if (!stop.description) return false;
 
@@ -50,6 +49,9 @@ export async function apiFilter(response) {
 
         const [stopName, lineName, endStations] = parts;
 
+        // unsure what these are, but they don't have valid predictions => rm for now
+        if (endStations == 'Track 1' || endStations == 'Track 2') return false;
+
         // if no main lines, rm
         const validLines = ['Green Line', 'Red Line', 'Blue Line', 'Orange Line'];
         if (!validLines.includes(lineName)) return false;
@@ -60,10 +62,8 @@ export async function apiFilter(response) {
         // Otherwise, add the stop name to the set
         seenStops.add(stop.description);
 
-        //else
         return true;
       });
-    console.log('stops:', stops);
     return stops;
   } catch (error) {
     console.error('Error fetching stops obj:', error);

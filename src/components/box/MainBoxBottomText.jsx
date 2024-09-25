@@ -5,19 +5,18 @@ const MainBoxBottomText = () => {
   const pred = getCommutePrediction();
   console.log('BottomText: prediction', pred);
 
-  //if (!prediction || !prediction.length) return
-
   return (
-    <div className="mb-2">
+    <div className="my-2">
       <div className="flex flex-col my-3 text-3xl font-bold">
         {!pred[0] ? (
-          <div className="text-center text-slate-100">No info available</div>
+          <div className="text-center text-slate-100">No data available</div>
         ) : pred[0].currentStatus ? (
           <div className="text-center text-slate-100">{pred[0].currentStatus}</div>
         ) : (
-          <div className="flex">
+          <div className="flex flex-col mx-2">
             <span className="text-center text-slate-100">
-              Next arrival at: {pred[0].arrivalAtTime}
+              Next arrival at: <br />
+              {pred[0].arrivalAtTime}
               <span className="text-sm text-slate-400"> &#40;{pred[0].arrivalIn}&#41;</span>
             </span>
           </div>
@@ -44,35 +43,4 @@ const MainBoxBottomText = () => {
     </div>
   );
 };
-//{prediction.pred.data[0].attributes.arrival_time.toString().substring(11, 16)}
 export default MainBoxBottomText;
-
-//{}
-//    Next arrival at: {prediction[0]}
-
-// ---- OLD
-// <div>
-//   {/* Check if predictions array exists and has at least 1 item */}
-//   {predictionTimes.length > 0 && (
-//     <div className="large-prediction">
-//       {predictions[0].time} min – {predictions[0].destination}
-//     </div>
-//   )}
-
-//   {/* Check if predictions array has at least 2 items */}
-//   {predictions.length > 1 && (
-//     <div className="small-prediction">
-//       {predictions[1].time} min – {predictions[1].destination}
-//     </div>
-//   )}
-
-//   {/* Check if predictions array has at least 3 items */}
-//   {predictions.length > 2 && (
-//     <div className="small-prediction">
-//       {predictions[2].time} min – {predictions[2].destination}
-//     </div>
-//   )}
-
-//   {/* If no predictions exist */}
-//   {predictions.length === 0 && <p>No upcoming predictions</p>}
-// </div>
