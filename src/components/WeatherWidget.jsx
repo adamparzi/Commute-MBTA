@@ -73,7 +73,7 @@ const WeatherWidget = () => {
   if (precip) description = `${precip.description} at ${precip.time}`;
   else description = weatherData[0]?.description;
 
-  // keep icon as current weather, regardless of future precip or not
+  // icon reflects current weather, regardless of future precip or not
   useEffect(() => {
     if (weatherData[0]?.iconId) {
       fetchIcon(weatherData[0].iconId);
@@ -87,8 +87,9 @@ const WeatherWidget = () => {
   console.log('weatherResponse?.data', weatherResponse?.data);
 
   return (
-    <div className="flex items-center  ">
+    <div className="flex items-center">
       <img src={iconUrl} />
+      
       <p className="text-slate-100 -my-2">{weatherData ? description : ''}</p>
     </div>
   );

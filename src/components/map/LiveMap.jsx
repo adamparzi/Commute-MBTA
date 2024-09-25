@@ -46,7 +46,7 @@ const LiveMap = () => {
         center={[42.3601, -71.0789]}
         zoom={12}
         scrollWheelZoom={true}
-        style={{ height: '400px', width: '500px' }}
+        style={{ height: '300px', width: '500px' }}
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
         }}>

@@ -17,7 +17,7 @@ const MainBoxBottomText = () => {
             <span className="text-center text-slate-100">
               Next arrival at: <br />
               {pred[0].arrivalAtTime}
-              <span className="text-sm text-slate-400"> &#40;{pred[0].arrivalIn}&#41;</span>
+              <span className="text-sm text-slate-100"> &#40;{pred[0].arrivalIn}&#41;</span>
             </span>
           </div>
         )}
