@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build project
-        run: npm run build
+        run: npm run build && npm run export
         env:
           NEXT_PUBLIC_MBTA_API: ${{ secrets.MBTA_API }} # This passes your API key to the build process
           NEXT_PUBLIC_OPENWEATHER_API: ${{ secrets.OPENWEATHER_API }}
