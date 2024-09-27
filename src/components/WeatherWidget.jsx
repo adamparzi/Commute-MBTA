@@ -80,11 +80,11 @@ const WeatherWidget = () => {
     }
   }, [weatherData[0]?.iconId]);
 
-  console.log('weatherHr', weatherHr);
-  console.log('weatherData', weatherData);
-  console.log('weatherIcon', iconUrl);
-  console.log('weatherData.iconId', weatherData[0]?.iconId);
-  console.log('weatherResponse?.data', weatherResponse?.data);
+  // console.log('weatherHr', weatherHr);
+  // console.log('weatherData', weatherData);
+  // console.log('weatherIcon', iconUrl);
+  // console.log('weatherData.iconId', weatherData[0]?.iconId);
+  // console.log('weatherResponse?.data', weatherResponse?.data);
 
   return (
     <div className="flex items-center  ">

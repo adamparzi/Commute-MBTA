@@ -9,17 +9,19 @@ const Searchbar = () => {
 
   useEffect(() => {
     const savedStop = localStorage.getItem('selectedStop');
-    if (savedStop && !selectedStop.id) {
-      setSelectedStop(savedStop);
+
+    if (savedStop && !selectedStop?.id) {
+      setSelectedStop(JSON.parse(savedStop));
     }
-  }, [setSelectedStop]);
+  }, []);
 
   const handleStopSelected = (stop) => {
-    setSelectedStop(stop);
-    localStorage.setItem('selectedStop', stop);
+    if (stop.id) {
+      setSelectedStop(stop);
+      localStorage.setItem('selectedStop', JSON.stringify(stop));
+    }
   };
 
-  //console.log('HERE SELECTEDSTOP LOCALSTORAGE', selectedStop);
   return (
     <div>
       <SearchbarLogic onStopSelected={handleStopSelected} />
