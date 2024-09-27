@@ -11,7 +11,7 @@ No more Google-mapping your work or school to check the T schedule for the 100th
 - Remembers your last selected station for convenience.  
 - Weather forecast and current temperature - time estimate for any precipitation within 12 hours.
 - Dynamic and interactive map to visualize transit routes and arrival estimates.
-- User-friendly interface compatible with mobile resolutions.
+- UI compatible with mobile resolutions.
 
 ## Technologies Used
 - [**Next.js**](https://nextjs.org/)
