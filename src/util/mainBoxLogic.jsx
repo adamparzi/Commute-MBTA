@@ -42,9 +42,10 @@ export const getCommutePrediction = () => {
 
   if (!selectedStop) return {};
 
+  // 70130
   const fetchPrediction = async () => {
     const params = {
-      'filter[stop]': selectedStop.id
+      'filter[stop]': selectedStop.id // ?? 70130
     };
     try {
       const predictionResponse = await apiFetch('/predictions', params);
