@@ -14,14 +14,20 @@ const CurrentTime = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  if (!currentTime) {
-    return null; // Don't render anything on the server side
-  }
+  // if (!currentTime) {
+  //   return null; // Don't render anything on the server side
+  // }
 
   return (
-    <div className="font-semibold text-slate-100">
-      {currentTime.toFormat('ccc, dd LLL HH:mm:ss')}
-    </div>
+    <>
+      {currentTime ? (
+        <div className="font-semibold text-slate-100">
+          {currentTime.toFormat('ccc, dd LLL HH:mm:ss')}
+        </div>
+      ) : (
+        <p className="text-slate-400">Loading...</p>
+      )}
+    </>
   );
 };
 

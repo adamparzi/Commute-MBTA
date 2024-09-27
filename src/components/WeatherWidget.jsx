@@ -39,8 +39,8 @@ const WeatherWidget = () => {
   };
 
   // any precipitation within 9hrs takes precedence
-  // else return current weather (within 3hrs of now)
-  // ** empty array works for .map, but NOT empty obj **
+  // else return current weather (current = within 3hrs of now)
+  // ** .map is ARRAY method, not object **
   const weatherHr = _.get(weatherResponse, 'data.list', []);
 
   const weatherData = weatherHr.map((hr) => {
@@ -55,7 +55,8 @@ const WeatherWidget = () => {
   useEffect(() => {
     fetchWeatherAPI();
 
-    const intervalId = setInterval(fetchWeatherAPI, 60000); // Polling every min
+    // Polling for weather every min
+    const intervalId = setInterval(fetchWeatherAPI, 60000);
     return () => clearInterval(intervalId);
   }, []);
 
@@ -64,34 +65,34 @@ const WeatherWidget = () => {
   const precip = weatherData.find((hr) =>
     precipOptions.some((desc) => desc.includes(hr.description))
   );
-  console.log('precip:', precip);
 
   var description;
 
   // if there's precipitation, give the estimated start time
   // else give current weather
-  if (precip) description = `${precip.description} at ${precip.time}`;
-  else description = weatherData[0]?.description;
+  if (precip) description = `${precip.description} at ~${precip.time}`;
+  else description = `${weatherData[0]?.description} - No precip.`;
 
-  // icon reflects current weather, regardless of future precip or not
+  // keep icon as current weather, regardless of future precip or not
   useEffect(() => {
     if (weatherData[0]?.iconId) {
       fetchIcon(weatherData[0].iconId);
     }
   }, [weatherData[0]?.iconId]);
 
-  console.log('weatherHr', weatherHr);
-  console.log('weatherData', weatherData);
-  console.log('weatherIcon', iconUrl);
-  console.log('weatherData.iconId', weatherData[0]?.iconId);
-  console.log('weatherResponse?.data', weatherResponse?.data);
-
   return (
-    <div className="flex items-center">
-      <img src={iconUrl} />
-      
-      <p className="text-slate-100 -my-2">{weatherData ? description : ''}</p>
-    </div>
+    <>
+      {weatherData[0] ? (
+        <div className="flex items-center -ml-3 ">
+          <img src={iconUrl} />
+          <p className="text-slate-100 -my-2">
+            {weatherData[0]?.temp}°F {description}
+          </p>
+        </div>
+      ) : (
+        ''
+      )}
+    </>
   );
 };
 
