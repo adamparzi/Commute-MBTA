@@ -9,13 +9,13 @@ const searchbarLogic = ({ onStopSelected }) => {
   const [stops, setStops] = useState([]);
 
   // selected stop, used for localStorage updates
-  const [selectedStop, setSelectedStop] = useState(() => {
-    const selectStop =
-      typeof window !== 'undefined' ? localStorage.getItem('selectedStop') || '' : null;
-    return selectStop;
-  });
+  // const [selectedStop, setSelectedStop] = useState(() => {
+  //   const selectStop =
+  //     typeof window !== 'undefined' ? localStorage.getItem('selectedStop') || '' : null;
+  //   return selectStop;
+  // });
 
-  console.log('HERE SELECTEDSTOP LOCALSTORAGE', selectedStop);
+  //console.log('HERE SELECTEDSTOP LOCALSTORAGE', selectedStop);
 
   // update list of all stop options
   useEffect(() => {
@@ -39,17 +39,10 @@ const searchbarLogic = ({ onStopSelected }) => {
     fetchStops();
   }, []); // empty dependency array to fetch data only once
 
-  useEffect(() => {
-    if (selectedStop.id) {
-      localStorage.setItem('selectedStop', selectedStop);
-    }
-  }, [selectedStop]);
-
   // this handler "returns" the selectedStop to parent handler (Searchbar)
   const handleStopChange = (event, selectedStop) => {
     if (selectedStop.id) {
       onStopSelected(selectedStop);
-      setSelectedStop(selectedStop);
     }
   };
 

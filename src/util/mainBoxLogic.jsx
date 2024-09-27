@@ -81,7 +81,7 @@ export const getCommutePrediction = () => {
     if (selectedStop.id) {
       fetchPrediction();
 
-      const intervalId = setInterval(fetchPrediction, 3000); // Polling every 3 seconds
+      const intervalId = setInterval(fetchPrediction, 10000); // Polling every 10 seconds
       return () => clearInterval(intervalId);
     }
   }, [selectedStop]);
