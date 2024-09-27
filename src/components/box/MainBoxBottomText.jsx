@@ -3,8 +3,7 @@ import { getCommutePrediction } from '@src/util/mainBoxLogic';
 
 const MainBoxBottomText = () => {
   const pred = getCommutePrediction();
-  console.log('BottomText: prediction', pred);
-
+  
   return (
     <div className="my-2">
       <div className="flex flex-col my-3 text-3xl font-bold">
