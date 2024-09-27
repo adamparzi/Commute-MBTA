@@ -23,6 +23,7 @@ WIP
 - [**Material-UI**](https://mui.com/)
 - [**MBTA API**](https://api-v3.mbta.com/)
 - [**Leaflet**](https://leafletjs.com/)
+- [**OpenWeatherMap**](https://openweathermap.org/)
 
 ## Future improvements
 - Add other modes of MBTA transit
