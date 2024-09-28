@@ -30,7 +30,7 @@ const searchbarLogic = ({ onStopSelected }) => {
 
   // this handler "returns" the selectedStop to parent handler (Searchbar)
   const handleStopChange = (event, selectedStop) => {
-    if (selectedStop.id) {
+    if (selectedStop?.id) {
       onStopSelected(selectedStop);
     }
   };
