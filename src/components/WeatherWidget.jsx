@@ -71,7 +71,7 @@ const WeatherWidget = () => {
   // if there's precipitation, give the estimated start time
   // else give current weather
   if (precip) description = `${precip.description} at ~${precip.time}`;
-  else description = `${weatherData[0]?.description} - No precip.`;
+  else description = `${weatherData[0]?.description} - No precip. today`;
 
   // keep icon as current weather, regardless of future precip or not
   useEffect(() => {

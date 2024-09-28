@@ -14,7 +14,7 @@ export const getCommuteName = () => {
   const [description, setDescription] = useState(null);
 
   useEffect(() => {
-    if (selectedStop && selectedStop.description) setDescription(selectedStop.description);
+    if (selectedStop && selectedStop?.description) setDescription(selectedStop.description);
   }, [selectedStop]);
 
   return description;
@@ -74,7 +74,7 @@ export const getCommutePrediction = () => {
   useEffect(() => {
     // make sure there's an id to fetch prediction with
     // empty array is true for some reason - need to check if id exists
-    if (selectedStop.id) {
+    if (selectedStop?.id) {
       fetchPrediction();
 
       // Polling prediction every 5 seconds
@@ -113,7 +113,7 @@ export const getCommutePrediction = () => {
         arrivalIn: arrivalIn,
         format: format,
         bearing: bearing,
-        location: { vehicleLatitude, vehicleLongitude }
+        location: { vehicleLatitude, vehicleLongitude } // JS automatically sets keys named after the variable here
       };
     })
     // remove bad predictions
@@ -168,7 +168,8 @@ export const getCommutePrediction = () => {
         currentStatus: newStatus,
         arrivalIn: pred.arrivalIn,
         bearing: pred.bearing,
-        location: pred.location
+        location: pred.location,
+        stopLocation: selectedStop.location // the location of the stop for the prediction
       };
     });
 

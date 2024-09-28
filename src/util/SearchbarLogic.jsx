@@ -19,6 +19,7 @@ const searchbarLogic = ({ onStopSelected }) => {
 
         // important - filters API (and constantly updates) for all relevant fields
         const stopFiltered = apiFilter(stopResponse);
+        console.log('stopFiltered', stopFiltered);
         setStops(stopFiltered);
       } catch (error) {
         console.error('Failed to fetch stops:', error);
@@ -30,7 +31,7 @@ const searchbarLogic = ({ onStopSelected }) => {
 
   // this handler "returns" the selectedStop to parent handler (Searchbar)
   const handleStopChange = (event, selectedStop) => {
-    if (selectedStop.id) {
+    if (selectedStop?.id) {
       onStopSelected(selectedStop);
     }
   };
