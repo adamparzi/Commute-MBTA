@@ -2,11 +2,9 @@
 
 
 
-An MBTA tracker purpose-built for Boston commuters.
+An MBTA tracker purpose-built for Boston commuters with a straightforward and informative interface.
 
 https://commutembta.netlify.app/
-
-WIP
 
 ## Features
 - Real-time predictions and estimates of the T from the MBTA API.
