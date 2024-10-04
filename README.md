@@ -2,7 +2,7 @@
 
 
 
-An MBTA tracker purpose-built for Boston commuters with a straightforward and informative interface.
+An MBTA tracker purpose-built for Boston commuters with a straightforward interface.
 
 https://commutembta.netlify.app/
 
