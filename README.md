@@ -14,7 +14,7 @@ https://commutembta.netlify.app/
 - UI compatible with mobile resolutions.
 
 ## Technologies Used
-- [**Next.js**](https://nextjs.org/)
+- [**React**](https://react.dev/)
 - [**Tailwind CSS**](https://tailwindcss.com/)
 - [**Material-UI**](https://mui.com/)
 - [**MBTA API**](https://api-v3.mbta.com/)
