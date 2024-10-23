@@ -5,8 +5,10 @@ import { useState, useEffect } from 'react';
 import { apiFetch, apiFilter } from './apiLogic';
 
 const searchbarLogic = ({ onStopSelected }) => {
+  // array of all stop options
   const [stops, setStops] = useState([]);
 
+  // update list of all stop options
   useEffect(() => {
     const fetchStops = async () => {
       const params = {
@@ -14,8 +16,6 @@ const searchbarLogic = ({ onStopSelected }) => {
       };
       try {
         const stopResponse = await apiFetch('/stops', params);
-
-        console.log('full stopResponse', stopResponse);
 
         // important - filters API (and constantly updates) for all relevant fields
         const stopFiltered = apiFilter(stopResponse);
@@ -30,7 +30,7 @@ const searchbarLogic = ({ onStopSelected }) => {
 
   // this handler "returns" the selectedStop to parent handler (Searchbar)
   const handleStopChange = (event, selectedStop) => {
-    if (selectedStop) {
+    if (selectedStop?.id) {
       onStopSelected(selectedStop);
     }
   };

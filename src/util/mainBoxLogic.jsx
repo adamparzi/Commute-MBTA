@@ -8,14 +8,13 @@ import { apiFetch } from './apiLogic';
 import { DateTime, Interval } from 'luxon';
 import _ from 'lodash'; // modular utilites, use _.get
 
-// name doesn't need to be fetched => uses selectedStop obj instead of fetching
-// mainbox top text
+// Uses selectedStop obj instead of fetching for box top text
 export const getCommuteName = () => {
   const { selectedStop } = useContext(StopContext);
   const [description, setDescription] = useState(null);
 
   useEffect(() => {
-    if (selectedStop && selectedStop.description) setDescription(selectedStop.description);
+    if (selectedStop && selectedStop?.description) setDescription(selectedStop.description);
   }, [selectedStop]);
 
   return description;
@@ -50,9 +49,6 @@ export const getCommutePrediction = () => {
     };
     try {
       const predictionResponse = await apiFetch('/predictions', params);
-
-      console.log('getCommutePrediction: response', predictionResponse);
-
       const predictionsWithVehicles = await Promise.all(
         predictionResponse.data.data.map(async (pred) => {
           const vehicleData = pred.relationships.vehicle.data;
@@ -78,14 +74,16 @@ export const getCommutePrediction = () => {
   useEffect(() => {
     // make sure there's an id to fetch prediction with
     // empty array is true for some reason - need to check if id exists
-    if (selectedStop.id) {
+    if (selectedStop?.id) {
       fetchPrediction();
 
-      const intervalId = setInterval(fetchPrediction, 3000); // Polling every 3 seconds
+      // Polling prediction every 5 seconds
+      const intervalId = setInterval(fetchPrediction, 5000);
       return () => clearInterval(intervalId);
     }
   }, [selectedStop]);
 
+  // more error checking
   if (!prediction || !prediction.length) {
     return [];
   }
@@ -94,7 +92,7 @@ export const getCommutePrediction = () => {
 
     // distill relevant information
     .map((pred) => {
-      // using lodash - last argument is default
+      // using lodash - last argument is default if something's N/A
       const vehicleInfo = _.get(pred, 'vehicleInfo.data.data[0]', {});
       const vehicleStopId = _.get(vehicleInfo, 'relationships.stop.data.id', null);
       const currentStatus = _.get(vehicleInfo, 'attributes.current_status', null);
@@ -115,26 +113,27 @@ export const getCommutePrediction = () => {
         arrivalIn: arrivalIn,
         format: format,
         bearing: bearing,
-        location: { vehicleLatitude, vehicleLongitude }
+        location: { vehicleLatitude, vehicleLongitude } // JS automatically sets keys named after the variable here
       };
     })
     // remove bad predictions
     .filter((pred) => {
-      // if relevant fields missing or broken, rm prediction
+      // if relevant fields missing or broken, rm prediction - IMPROVE
       if (Object.values(pred).some((val) => !val)) {
-        console.log('rm bad predictions in:', pred);
         return false;
       }
 
-      // if passed, passed = how long ago prediction was. otherwise, invalid interval
+      // passed = how long ago prediction was. otherwise, invalid interval
       const passed = Interval?.fromDateTimes(pred.arrivalAtTimeDT, DateTime.now());
 
-      // if departing from selectedStop, rm
+      // if departing from selectedStop, rm - most common conditional hit for valid vehicles
       if (pred.currentStatus === 'DEPARTING' && pred.vehicleStopId === selectedStop.id)
         return false;
 
       // if ETA has passed significantly, AND if vehicle not stopped at selectedStop, rm.
-      // currently, gives a grace period of 30 seconds if vehicle is boarding for 30 seconds
+      // currently, gives a grace period of 30s if vehicle is boarding for that long
+      // otherwise, rm prediction after 10s of having passed
+      // consider using stop_sequence or global coords as a factor
       if (
         Interval.isInterval(passed) &&
         passed.length('seconds') > 10 // remove conservatively for now
@@ -143,7 +142,6 @@ export const getCommutePrediction = () => {
           pred.currentStatus != 'STOPPED_AT' &&
           pred.stop_sequence != selectedStop.stop_sequence
         ) {
-          console.log('Old prediction hit');
           return false;
         } else if (passed.length('seconds') > 30) return false;
       }
@@ -154,7 +152,7 @@ export const getCommutePrediction = () => {
     // limit # predictions to 3
     .slice(0, 3)
 
-    // format for display
+    // format for render
     .map((pred) => {
       var newStatus = '';
 
@@ -170,10 +168,10 @@ export const getCommutePrediction = () => {
         currentStatus: newStatus,
         arrivalIn: pred.arrivalIn,
         bearing: pred.bearing,
-        location: pred.location
+        location: pred.location,
+        stopLocation: selectedStop.location // the location of the stop for the prediction
       };
     });
 
-  console.log('mainBoxLogic: predictionFiltered', predictionFiltered);
   return predictionFiltered;
 };

@@ -1,14 +1,25 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import SearchbarLogic from '../util/SearchbarLogic';
 import { StopContext } from '@src/util/StopProvider';
 
 const Searchbar = () => {
   const { selectedStop, setSelectedStop } = useContext(StopContext);
 
+  useEffect(() => {
+    const savedStop = localStorage.getItem('selectedStop');
+
+    if (savedStop && !selectedStop?.id) {
+      setSelectedStop(JSON.parse(savedStop));
+    }
+  }, []);
+
   const handleStopSelected = (stop) => {
-    setSelectedStop(stop);
+    if (stop.id) {
+      setSelectedStop(stop);
+      localStorage.setItem('selectedStop', JSON.stringify(stop));
+    }
   };
 
   return (

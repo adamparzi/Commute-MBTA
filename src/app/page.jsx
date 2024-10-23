@@ -10,6 +10,7 @@ import { StopProvider } from '@src/util/StopProvider';
 //import LiveMap from '@src/components/LiveMap';
 
 import dynamic from 'next/dynamic';
+import Footer from '@src/components/Footer';
 
 // to prevent window rendering issues for leaflet in nextjs, disable server side rendering
 const LazyMap = dynamic(() => import('@src/components/map/LiveMap'), {
@@ -26,6 +27,7 @@ const page = () => {
         <Searchbar />
         <LazyMap />
       </StopProvider>
+      <Footer />
     </div>
   );
 };

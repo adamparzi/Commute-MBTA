@@ -11,7 +11,7 @@ const TitleContext = () => {
 
       <CurrentTime />
       <WeatherWidget />
-      <hr className="border-gray-500 mx-auto my-2 w-10/12" />
+      <hr className="border-gray-500 mx-auto my-2 w-[1000px]" />
     </div>
   );
 };

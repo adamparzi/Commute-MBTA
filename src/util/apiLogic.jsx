@@ -34,7 +34,11 @@ export function apiFilter(response) {
       .map((stop) => ({
         id: stop.id,
         description: stop.attributes.description,
-        stop_sequence: stop.attributes.stop_sequence
+        stop_sequence: stop.attributes.stop_sequence,
+        location: {
+          latitude: stop.attributes.latitude,
+          longitude: stop.attributes.longitude
+        }
       }))
       // format stop description
       .filter((stop) => {
