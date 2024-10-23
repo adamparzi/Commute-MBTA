@@ -11,7 +11,7 @@ const Searchbar = () => {
     const savedStop = localStorage.getItem('selectedStop');
 
     if (savedStop && !selectedStop?.id) {
-      setSelectedStop(JSON.parse(savedStop));
+      setSelectedStop(savedStop); // was JSON.parse(savedStop) - error
     }
   }, []);
 
