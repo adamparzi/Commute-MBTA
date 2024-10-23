@@ -42,8 +42,6 @@ const searchbarLogic = ({ onStopSelected }) => {
           width: 250,
           input: { color: 'white' },
           label: { color: 'white' },
-          // backgroundColor: 'darkgray',
-          // borderRadius: '10x',
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
               borderColor: 'darkgray' // Default border color
