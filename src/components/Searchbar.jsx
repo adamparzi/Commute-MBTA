@@ -11,12 +11,15 @@ const Searchbar = () => {
     const savedStop = localStorage.getItem('selectedStop');
 
     if (savedStop && !selectedStop?.id) {
-      setSelectedStop(savedStop); // was JSON.parse(savedStop) - error
+      console.log('Runs');
+      console.log(savedStop);
+      setSelectedStop(JSON.parse(savedStop));
     }
   }, []);
 
   const handleStopSelected = (stop) => {
     if (stop.id) {
+      console.log('runs2');
       setSelectedStop(stop);
       localStorage.setItem('selectedStop', JSON.stringify(stop));
     }
